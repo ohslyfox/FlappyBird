@@ -17,6 +17,9 @@ public boolean scoredPipe;
 public boolean gameActive;
 public boolean jumpReleased;
 
+/**
+ * initalizes the game
+ */
 public void setup() {
   frameRate(144);
   size(1280, 720);
@@ -27,6 +30,9 @@ public void setup() {
   restart();
 }
 
+/**
+ * Handles key press events
+ */
 public void keyPressed() {
   if (keyCode == ' ' && jumpReleased && bird.getLocation().y > (BIRD_HEIGHT/2) && bird.isAlive()) {
     gameActive = true;
@@ -38,12 +44,18 @@ public void keyPressed() {
   }
 }
 
+/**
+ * Handles key release events
+ */
 public void keyReleased() {
   if (keyCode == ' ') {
     jumpReleased = true;
   }
 }
 
+/**
+ * Restarts the game
+ */
 public void restart() {
   // recreate objects
   pipes = new Pipe[5];
@@ -60,6 +72,11 @@ public void restart() {
   jumpReleased = true;
 }
 
+/**
+ * Creates and loads a highscore table and loads
+ * data into local variables for displaying highscores
+ * @return dataTable, the table containing highscores
+ */
 public Table loadData() {
   // create a highscore table
   Table dataTable = new Table();
@@ -85,6 +102,10 @@ public Table loadData() {
   return dataTable;
 }
 
+/**
+ * Attempts to save the current score to the
+ * highscore table
+ */
 public void saveData() {
   // load table
   Table dataTable = loadData();
@@ -94,9 +115,7 @@ public void saveData() {
     // abort if zero score or duplicate score
     if (bird.getScore() == 0) return;
     for (TableRow current : dataTable.rows()) {
-      if (current.getInt("score") == bird.getScore()) {
-        return;
-      }
+      if (current.getInt("score") == bird.getScore()) return;
     }
     
     // add the new score to the table
@@ -127,6 +146,9 @@ public void saveData() {
   }
 }
 
+/**
+ * Game loop, handles frame-by-frame game mechanics
+ */
 public void draw() {
   //draw and scroll background
   background.display();
@@ -162,20 +184,28 @@ public void draw() {
       text("Press SPACE to start!", width/2, height/2-100); 
     }
     else {
-      text(bird.getScore(), width/2, 100);
+      text(bird.getScore(), width/2, 75);
     }
   }
   else {
     fill(0);
     textSize(48);
-    text("GAME OVER.", width/2, height/2-100);
-    text("Score: " + bird.getScore(), width/2, height/2);
+    text("GAME OVER", width/2, height/2 - 200);
+    text("Score: " + bird.getScore(), width/2, height/2 - 100);
     textSize(32);
-    text("Press 'r' to restart.", width/2, height/2 +50);
+    text("Press 'R' to restart", width/2, height/2 -50);
     if (!gameActive) {
+      fill(0,0,0,50);
+      stroke(0,0,0,150);
+      rect(width/2 - 210, height/2, 420, map(scores.length, 0, 5, 60, 325));
+      fill(0);
+      text("Score", width/2 - 125, height/2 + 40);
+      text("Date", width/2 + 100, height/2 + 40);
+      text("-----", width/2 - 125, height/2 + 60);
+      text("----", width/2 + 100, height/2 + 60);
       for (int i = 0; i < scores.length; i++) {
         text(scores[i], width/2 -125, height/2 + 50 + 50*(i+1));
-        text(dates[i], width/2 + 50, height/2 + 50 + 50*(i+1));
+        text(dates[i], width/2 + 100, height/2 + 50 + 50*(i+1));
       }
     }
   }

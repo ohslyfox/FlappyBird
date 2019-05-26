@@ -8,6 +8,10 @@ class Background {
   private PVector firstL, secondL, velocity;
   private int imageWidth;
   
+  /**
+   * Default constructor, picks a random image and sets up
+   * background scrolling variables
+   */
   public Background() {
     if ((int)random(0,2) == 0) {
       backgroundImage = loadImage("background_scroll.png");
@@ -21,9 +25,13 @@ class Background {
     velocity = new PVector(-2,0);
   }
   
+  /**
+   * Scrolls the background
+   */
   public void scroll() {
     firstL.add(velocity);
     secondL.add(velocity);
+    
     //move image that has surpassed 
     //screenlength to the end of the next image
     if (firstL.x <= -imageWidth) {
@@ -34,6 +42,9 @@ class Background {
     }
   }
   
+  /**
+   * Displays the background
+   */
   public void display() {
     image(backgroundImage, firstL.x, firstL.y);
     image(backgroundImage, secondL.x, secondL.y);
