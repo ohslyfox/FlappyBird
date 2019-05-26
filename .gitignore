@@ -1,4 +1,4 @@
 #avoid tracking
 application.windows64/
 application.windows32/
-data/
+data/scores.csv
