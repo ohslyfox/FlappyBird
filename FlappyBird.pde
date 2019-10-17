@@ -12,6 +12,7 @@ private Bird bird;
 private Background background;
 private int[] scores;
 private String[] dates;
+private PImage pipeUprightImage, pipeUpsideDownImage;
 public int pipeIncrementer;
 public boolean scoredPipe;
 public boolean gameActive;
@@ -27,7 +28,10 @@ public void setup() {
   imageMode(CORNER);
   scores = new int[0];
   dates = new String[0];
+  pipeUprightImage = loadImage("pipe.png");
+  pipeUpsideDownImage = loadImage("pipe_upsidedown.png");
   restart();
+  saveData(); // faster loading
 }
 
 /**
@@ -60,7 +64,7 @@ public void restart() {
   // recreate objects
   pipes = new Pipe[5];
   for (int i = 0; i < pipes.length; i++) {
-    pipes[i] = new Pipe(new PVector(550 + 550*i, 0)); 
+    pipes[i] = new Pipe(new PVector(550 + 550*i, 0), pipeUprightImage, pipeUpsideDownImage); 
   }
   bird = new Bird();
   background = new Background();
@@ -139,7 +143,15 @@ public void saveData() {
     
     // save data
     saveStrings(dataPath("scores.csv"), lines);
-    loadData(); // for fetching new score into local vars
+    
+    // load table into highscore vars
+    scores = new int[min(dataTable.getRowCount(),5)];
+    dates = new String[scores.length];
+    for (int i = 0; i < scores.length; i++) {
+      TableRow currentRow = dataTable.getRow(i);
+      scores[i] = currentRow.getInt("score");
+      dates[i] = currentRow.getString("date");
+    }
   }
   catch (Exception e) {
     // do nothing

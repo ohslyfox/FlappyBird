@@ -16,9 +16,9 @@ class Pipe {
    * of the pipe
    * @param startLoc, the starting location of the pipe
    */
-  public Pipe(PVector startLoc) {
-    pipeUpright = loadImage("pipe.png");
-    pipeUpsideDown = loadImage("pipe_upsidedown.png");
+  public Pipe(PVector startLoc, PImage uprightImage, PImage upsideDownImage) {
+    pipeUpright = uprightImage;
+    pipeUpsideDown = upsideDownImage;
     velocity = new PVector(-3, 0);
     newPipe(startLoc); 
   }
